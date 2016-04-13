@@ -158,7 +158,7 @@ namespace spec
 
 			x1 = 0, y1 = 0, x2 = 2, y2 = 3;
 			Assert::AreEqual(1, path_exists((int*)maze, m, n, x1, y1, x2, y2), L"Error for 3x5 Maze", 1, 2);
-
+			
 			x1 = 0, y1 = 0, x2 = 1, y2 = 2;
 			Assert::AreEqual(0, path_exists((int*)maze, m, n, x1, y1, x2, y2), L"Error for 3x5 Maze", 1,2);
 			
