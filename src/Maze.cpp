@@ -34,9 +34,81 @@ more parameters .
 */
 
 #include<stdlib.h>
+#include <stdio.h>
+void generate_array(int **input_array, int rows, int columns)
+{
+	int k = 0;
+	for (int i = 0; i < rows; i++)
+		for (int j = 0; j < columns; j++)
+			input_array[i][j] =0;
+}
 
+int path(int *maze, int rows, int columns, int x1, int y1, int x2, int y2, int ** visited)
+{
+	printf("%d,%d\n", x1, y1);
+	if (x1 >=rows || x1<0 || y1 >=columns || y1 < 0)
+	{
+		return(0);
+	}
+	if (*((maze + x1*columns) + y1) == 0)
+	{
+		return 0;
+	}
+	
+	if (visited[x1][y1] == 1)
+	{
+		return 0;
+	}
+	if (visited[x1][y1] == 0)
+	{
+		visited[x1][y1] = 1;
+	}
+	
+	 if(x1 == x2 && y1==y2)
+	{
+		return 1;
+	}
+
+	else
+	{
+		printf("east\n");
+		
+		int r = path(maze, rows, columns, x1, y1 + 1, x2, y2,visited);
+		printf("down\n");
+		//printf("%d%d\n", x1, y1);
+		int d = path(maze, rows, columns, x1 + 1, y1, x2, y2,visited);
+		printf("left\n");
+		int l = path(maze, rows, columns, x1, y1 - 1, x2, y2,visited);
+		printf("up\n");
+		int u = path(maze, rows, columns, x1-1, y1, x2, y2,visited);
+		
+		
+		if (r == 1 || d == 1 || l == 1 || u== 1)
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
+}
 
 int path_exists(int *maze, int rows, int columns, int x1, int y1, int x2, int y2)
 {
-	return 1;
+	if (rows<0||columns<0)
+	{
+		return 0;
+	}
+	int **visited = (int **)malloc(rows * sizeof(int *));
+	for (int i = 0; i < rows; i++)
+		visited[i] = (int *)malloc(columns * sizeof(int));
+
+	generate_array((int**)visited, rows, columns);
+	return path(maze, rows, columns, x1, y1, x2, y2, visited);
+		
+		//return path_exists(maze, rows, columns, x1, y1 - 1, x2, y2);
+		//return path_exists(maze, rows, columns, x1 - 1, y1, x2, y2);
+	
 }

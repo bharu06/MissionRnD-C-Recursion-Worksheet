@@ -33,8 +33,94 @@ Note : Check the function Parameters ,Its a double pointer .
 
 #include "stdafx.h"
 #include<stdlib.h>
+#include<stdio.h>
 
-int *spiral(int rows, int columns, int **input_array)
+int * spiral_rec(int rows, int columns, int **in, int left, int up, int * a, int index)
 {
-	return NULL;
+	if (up>rows||left>columns)
+	{
+		return a;
+	}
+	else if (rows == 1 && columns > 1)
+	{
+		for (int i = left; i < columns; i++)
+		{
+			a[index++] = in[rows-1][i]; //printf("%d", in[rows-1][i]);
+			 up++;
+			 left++;
+		}
+		return a;
+	}
+	else if (columns == 1 && rows > 1)
+	{
+		for (int i = up; i <rows; i++)
+		{
+			a[index++] = in[i][columns-1]; printf("%d", in[i][columns-1]);
+			 up++; left++;
+		}
+		return a;
+	}
+	else
+	{
+		int i, j;
+		for (i = left; i < columns; i++)
+		{
+			a[index++] = in[left][i];
+			//printf("%2d", in[left][i]);
+		}
+		i--; up++;
+		for (j = up; j < rows; j++)
+		{
+			a[index++] = in[j][i];
+			//printf("%2d", in[j][i]);
+		}
+		j--; i--;
+		for (i; i >= left; i--)
+		{
+			a[index++] = in[j][i];
+			//printf("%2d", in[j][i]);
+		}
+		i++; j--; left++;
+		for (j; j >= up; j--)
+		{
+			a[index++] = in[j][i];
+			//printf("%2d", in[j][i]);
+		}
+
+		return spiral_rec(rows-1, columns-1, in, left, up, a, index);
+
+		
+	}
+	
+}
+int * spiral(int rows, int columns, int **in)
+{
+	
+
+	
+
+	if (in == NULL || columns <= 0 || rows <= 0)
+	{
+		 return NULL;
+	}
+	for (int i = 0; i < rows; i++){
+		for (int j = 0; j < columns; j++){
+			printf("%2d", in[i][j]);
+		}
+		printf("\n");
+	}
+	int * a = (int *)malloc(sizeof(int)*(rows*columns));
+	/*for (int i = 0; i < rows; i++){
+		for (int j = 0; j < columns; j++){
+			printf("%2d", in[i][j]);
+		}
+		printf("\n");
+	}
+	for (int i = 0; i < rows*columns; i++)
+	{
+		//printf("%2d", a[i]);
+	}*/
+	a = spiral_rec(rows, columns, in, 0, 0, a, 0);
+	return a;
+	//return spiral_rec(rows, columns, in, 0, 0, a, 0);
 }

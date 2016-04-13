@@ -43,6 +43,68 @@ P.S: The Above Problem is just a modified version of a popular BackTracking prob
 */
 
 #include "stdafx.h"
-int solve_nsnipers(int *battlefield, int n){
+int isSafe(int *battlefield, int x, int y,int columns)
+{
+	int i = x, j = y;
+	while (i >= 0 && j >= 0)
+	{
+		if (*((battlefield + i*columns) + j)==1)
+		{
+			return 0;
+		}i--; j--;
+
+	}
+	i = x; j = y;
+	while (i >= 0)
+	{
+		if (*((battlefield + i*columns) + j) == 1)
+		{
+			return 0;
+		}i--;
+	}
+	i = x; j = y;
+	while (i >= 0 && j<columns)
+	{
+		if (*((battlefield + i*columns) + j) == 1)
+		{
+			return 0;
+		}
+		i--; j++;
+		//
+	}
+	return 1;
+}
+int snipers_rec(int *battlefield, int rows, int cols)
+{
+	int issafeflag = 0;
+	if (rows == cols){
+		return 1;
+	}
+	for (int i = 0; i < cols; i++)
+	{
+		//printf("issafe:%2d rows:%2d i:%2d\n", isSafe(battlefield, rows, i, cols), rows, i);
+		if (isSafe(battlefield, rows, i, cols))
+		{
+			issafeflag = 1;
+			*((battlefield + rows*cols) + i) = 1;
+			int flag = snipers_rec(battlefield, rows + 1, cols);
+			if (flag == 0)
+			{
+				*((battlefield + rows*cols) + i) = 0;
+			}
+			else
+			{
+				*((battlefield + rows*cols) + i) = 0;
+				return flag;
+			}
+		}
+		
+	}
 	return 0;
+
+}
+int solve_nsnipers(int *battlefield, int n){
+	if (battlefield == NULL){ return 0; }
+	return snipers_rec(battlefield, 0, n);
+	
 }
